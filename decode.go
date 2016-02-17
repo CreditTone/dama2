@@ -71,7 +71,9 @@ func (p *Dama2Client) Decode(body []byte, auth string, codeType, length int) (*R
 	params := map[string]string{
 		"auth": auth,
 		"type": strconv.Itoa(codeType),
-		"len":  strconv.Itoa(length),
+	}
+	if length > 0 {
+		params["len"] = strconv.Itoa(length)
 	}
 	req, err := uploadBody(body, "http://api.dama2.com:7788/app/decode", params)
 

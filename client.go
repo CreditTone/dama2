@@ -73,11 +73,11 @@ func (p *Dama2Client) Init(appid, uname, pwd string) error {
 	return nil
 }
 
-func (p *Dama2Client) Captcha(img []byte, codeType int, appid, uname, pwd string) (string, error) {
+func (p *Dama2Client) Captcha(img []byte, format string, codeType int, appid, uname, pwd string) (string, error) {
 	if len(p.auth) == 0 || (time.Now().Sub(p.lastUpdateAuth).Minutes() > 5) {
 		p.Init(appid, uname, pwd)
 	}
-	decode, err := p.Decode(img, p.auth, codeType, 0)
+	decode, err := p.Decode(img, format, p.auth, codeType, 0)
 	if err != nil {
 		return "", err
 	}

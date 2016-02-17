@@ -43,14 +43,14 @@ func createPart(fieldname, filename, contentType string, w *multipart.Writer, va
 	return err
 }
 
-func uploadBody(ubody []byte, link string, params map[string]string) (*http.Request, error) {
+func uploadBody(ubody []byte, format, link string, params map[string]string) (*http.Request, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
 	for k, v := range params {
 		createPart(k, "", "plain/text", writer, []byte(v))
 	}
-	err := createPart("data", "test.png", "image/png", writer, ubody)
+	err := createPart("data", "test."+format, "image/"+format, writer, ubody)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func uploadBody(ubody []byte, link string, params map[string]string) (*http.Requ
 	return req, nil
 }
 
-func (p *Dama2Client) Decode(body []byte, auth string, codeType, length int) (*Result, error) {
+func (p *Dama2Client) Decode(body []byte, format, auth string, codeType, length int) (*Result, error) {
 	params := map[string]string{
 		"auth": auth,
 		"type": strconv.Itoa(codeType),
@@ -75,7 +75,7 @@ func (p *Dama2Client) Decode(body []byte, auth string, codeType, length int) (*R
 	if length > 0 {
 		params["len"] = strconv.Itoa(length)
 	}
-	req, err := uploadBody(body, "http://api.dama2.com:7788/app/decode", params)
+	req, err := uploadBody(body, format, "http://api.dama2.com:7788/app/decode", params)
 
 	if err != nil {
 		return nil, err

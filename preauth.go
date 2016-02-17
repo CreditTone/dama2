@@ -22,5 +22,6 @@ func (p *Dama2Client) PreAuth() (*Result, error) {
 		return nil, err
 	}
 	err = json.Unmarshal(b, &ret)
+	p.updateAuth(ret.Auth)
 	return &ret, err
 }

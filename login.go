@@ -29,7 +29,8 @@ func (p *Dama2Client) Login(appid, uname, pwd, preauth string) (*Result, error) 
 	b, _ := ioutil.ReadAll(resp.Body)
 	var ret Result
 	err = json.Unmarshal(b, &ret)
-	return &ret, nil
+	p.updateAuth(ret.Auth)
+	return &ret, err
 }
 
 /*
@@ -46,5 +47,6 @@ func (p *Dama2Client) ReadInfo(auth string) (*Result, error) {
 	b, _ := ioutil.ReadAll(resp.Body)
 	var ret Result
 	err = json.Unmarshal(b, &ret)
-	return &ret, nil
+	p.updateAuth(ret.Auth)
+	return &ret, err
 }

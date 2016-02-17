@@ -88,6 +88,7 @@ func (p *Dama2Client) Decode(body []byte, auth string, codeType, length int) (*R
 	b, _ := ioutil.ReadAll(resp.Body)
 	var ret Result
 	err = json.Unmarshal(b, &ret)
+	p.updateAuth(ret.Auth)
 	return &ret, err
 }
 
@@ -105,5 +106,6 @@ func (p *Dama2Client) GetResult(auth, id string) (*Result, error) {
 	b, _ := ioutil.ReadAll(resp.Body)
 	var ret Result
 	err = json.Unmarshal(b, &ret)
+	p.updateAuth(ret.Auth)
 	return &ret, err
 }
